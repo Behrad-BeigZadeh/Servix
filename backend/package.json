@@ -1,0 +1,45 @@
+{
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "ts-node dist/index.ts",
+    "seed": "dotenv -e .env -- ts-node src/prisma/seed.ts",
+    "prisma:generate": "prisma generate --schema=src/prisma/schema.prisma",
+    "prisma:studio": "prisma studio --schema=src/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=src/prisma/schema.prisma",
+    "seed:test": "cross-env NODE_ENV=test dotenv -e ../.env.test -- ts-node ./src/prisma/test-seed.ts"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.15.3",
+    "@types/socket.io": "^3.0.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "dotenv-cli": "^8.0.0",
+    "env-cmd": "^10.1.0",
+    "supertest": "^7.1.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.6.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.2",
+    "prisma": "^6.8.2",
+    "rate-limiter-flexible": "^7.1.0",
+    "socket.io": "^4.8.1",
+    "zod": "^3.24.3"
+  }
+}

@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ChatRoom {
+  id         String    @id @default(uuid())
+  client     User      @relation("ClientChats", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId   String
+  provider   User      @relation("ProviderChats", fields: [providerId], references: [id], onDelete: Cascade)
+  providerId String
+  messages   Message[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([clientId, providerId])
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  content    String
+  sender     User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderId   String
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  chatRoomId String
+  createdAt  DateTime @default(now())
+  read       Boolean  @default(false)
+  seenByIds  String[]
+}
+
+model User {
+  id            String         @id @default(uuid())
+  username      String         @unique
+  email         String         @unique
+  password      String
+  refreshToken  String?
+  avatar        String?
+  role          Role           @default(CLIENT)
+  services      Service[]      @relation("ProviderServices")
+  bookings      Booking[]      @relation("ClientBookings")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  clientChats   ChatRoom[]     @relation("ClientChats")
+  providerChats ChatRoom[]     @relation("ProviderChats")
+  Message       Message[]
+  Notification  Notification[]
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  services  Service[]
+  createdAt DateTime  @default(now())
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  price       Float
+  images      String[]
+  provider    User      @relation("ProviderServices", fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  date      DateTime
+  service   Service       @relation(fields: [serviceId], references: [id])
+  serviceId String
+  client    User          @relation("ClientBookings", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId  String
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  COMPLETED
+  CANCELLED
+}
+
+enum Role {
+  CLIENT
+  PROVIDER
+}
