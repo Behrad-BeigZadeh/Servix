@@ -48,14 +48,15 @@ cd Servix
    npm install
    
  ### Set up environment variables
--PORT=5000
--NODE_ENV=development
--DATABASE_URL=You can add it from neon
--ACCESS_TOKEN_SECRET=your_access_token
--REFRESH_TOKEN_SECRET=your_refresh_token
--CLOUDINARY_CLOUD_NAME=your_cloudinary_name
--CLOUDINARY_API_KEY=your_cloudinary_key
--CLOUDINARY_API_SECRET=your_cloudinary_secret
+     ```
+    -PORT=5000
+    -NODE_ENV=development
+    -DATABASE_URL=You can add it from neon
+    -ACCESS_TOKEN_SECRET=your_access_token
+    -REFRESH_TOKEN_SECRET=your_refresh_token
+    -CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+    -CLOUDINARY_API_KEY=your_cloudinary_key
+    -CLOUDINARY_API_SECRET=your_cloudinary_secret
 
  ### Run Backend
     ```bash
