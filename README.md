@@ -57,9 +57,9 @@ cd Servix
 -CLOUDINARY_API_KEY=your_cloudinary_key
 -CLOUDINARY_API_SECRET=your_cloudinary_secret
 
+ ### Run Backend
     ```bash
-    
-    npm run dev
+    -npm run dev
 
 
 
