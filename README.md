@@ -57,12 +57,15 @@ cd Servix
 -CLOUDINARY_API_KEY=your_cloudinary_key
 -CLOUDINARY_API_SECRET=your_cloudinary_secret
 
-npm run dev
+    ```bash
+    npm run dev
 
-### Seeding Database 
--npx prisma:migrate
 
--npm run seed
+
+ ### Seeding Database 
+    ```bash
+    -npx prisma:migrate
+    -npm run seed
 
 
 ---
@@ -77,7 +80,8 @@ npm run dev
  ### Set up environment variables
 NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
 
-npm run dev
+         ```bash
+        npm run dev
 
 ---
 
