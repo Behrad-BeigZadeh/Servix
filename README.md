@@ -1,81 +1,74 @@
-Servix
+# Servix
 
 Servix is a full-stack service marketplace platform that allows users to offer, browse, and book services. Built with a modern tech stack, Servix supports real-time chat, authentication, notifications, and booking workflows.
 
-🚀 Features
+---
 
-✅ User Authentication (JWT-based: access & refresh tokens)
+## 🚀 Features
 
-📦 Service creation & listing
+- ✅ User Authentication (JWT-based: access & refresh tokens)  
+- 📦 Service creation & listing  
+- 📅 Booking system with real-time status updates  
+- 💬 Real-time chat with Socket.IO  
+- 🛎️ Real-time notifications  
+- ☁️ Image uploads via Cloudinary  
+- ✅ Fully tested backend using Jest + Supertest  
 
-📅 Booking system with real-time status updates
+---
 
-💬 Real-time chat with Socket.IO
+## 🛠️ Tech Stack
 
-🛎️ Real-time notifications
+**Frontend:**  
+- Next.js  
+- Tailwind CSS  
+- Zustand (state management)  
 
-☁️ Image uploads via Cloudinary
+**Backend:**  
+- Node.js + Express  
+- Prisma ORM  
+- PostgreSQL (Neon)  
+- Socket.IO  
+- JWT Authentication  
+- Cloudinary API  
 
-✅ Fully tested backend using Jest + Supertest
+**Testing:**  
+- Jest  
+- Supertest  
 
-🛠️ Tech Stack
+**Deployment (planned):**  
+- Frontend: Vercel  
+- Backend: Render  
 
-Frontend:
+---
 
-Next.js
+## 📁 Project Structure
 
-Tailwind CSS
-
-Zustand (state management)
-
-Backend:
-
-Node.js + Express
-
-Prisma ORM
-
-PostgreSQL (Neon)
-
-Socket.IO
-
-JWT Authentication
-
-Cloudinary API
-
-Testing:
-
-Jest
-
-Supertest
-
-Deployment (planned):
-
-Frontend: Vercel
-
-Backend: Render
-
-📁 Project Structure
 
 Servix/
-├── backend/           # Express backend
-├── frontend/          # Next.js frontend
-├── tests/             # Backend tests
-├── .env               # Environment file (local dev)
-├── .env.test          # Environment for tests (not committed)
-├── .env.test.example  # Example test env (safe to commit)
+├── backend/ # Express backend
+├── frontend/ # Next.js frontend
+├── tests/ # Backend tests
+├── .env # Environment file (local dev)
+├── .env.test # Environment for tests (NOT committed)
+├── .env.test.example # Example test env (safe to commit)
 
-🧪 Running Tests
 
-Setup
 
-Create a .env.test file in the root directory based on the .env.test.example provided:
 
+---
+
+## 🧪 Running Tests
+
+### Setup
+
+Create a `.env.test` file in the root directory based on `.env.test.example`:
+
+```bash
 cp .env.test.example .env.test
-
-Run tests
 
 npm install
 npm test
+
 
 🖥️ Running Locally
 
