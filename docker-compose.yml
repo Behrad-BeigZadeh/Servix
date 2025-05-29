@@ -1,8 +1,10 @@
+version: "3.8"
+
 services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     volumes:
       - ./backend:/app
       - /app/node_modules
