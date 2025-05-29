@@ -94,11 +94,13 @@ const ServiceCategories = () => {
                   )}`}
                   key={cat.id}
                 >
-                  <div className="flex flex-col items-center p-6 bg-zinc-100 rounded-xl shadow hover:shadow-md transition hover:scale-105 cursor-pointer">
+                  <div className="flex flex-col text-center  items-center p-6 bg-zinc-100 rounded-xl shadow hover:shadow-md transition hover:scale-105 cursor-pointer">
                     {iconMap[cat.name] ?? (
                       <Sparkles className="w-8 h-8 mb-2 text-zinc-500" />
                     )}
-                    <div className="text-lg font-medium">{cat.name}</div>
+                    <div className="text-[13px] sm:text-[17px] font-medium whitespace-nowrap ">
+                      {cat.name}
+                    </div>
                   </div>
                 </Link>
               ))}
