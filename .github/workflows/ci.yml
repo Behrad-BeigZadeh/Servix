@@ -1,4 +1,4 @@
-name: CI - Servix App
+name: Run Tests
 
 on:
   push:
@@ -7,24 +7,32 @@ on:
     branches: [main]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name:  Checkout code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name:  Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
 
-      - name:  Install dependencies
-        run: npm ci
+     
+      - name: Install root dependencies
+        run: npm install
 
-      - name: Run tests
+    
+      - name: Run backend tests
+        run: npm test
+
+      
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      
+      - name: Run frontend tests
+        working-directory: frontend
         run: npm run test
-
-      - name: Build project
-        run: npm run build
