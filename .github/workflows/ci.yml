@@ -28,19 +28,17 @@ jobs:
 
       - name: Create .env.test file
         run: |
-         echo "${{ secrets.ENV_TEST }}" > .env.test
-
-
+          echo "$ENV_TEST" > .env.test
+        env:
+          ENV_TEST: ${{ secrets.ENV_TEST }}
 
       - name: Run backend tests
         run: npm test
 
-      
       - name: Install frontend dependencies
         working-directory: frontend
         run: npm install
 
-      
       - name: Run frontend tests
         working-directory: frontend
         run: npm run test
