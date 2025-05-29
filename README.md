@@ -89,13 +89,21 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
 
 ## 🧪 Running Tests
 
-### Setup
+### Setup for backend
 
 Create a `.env.test` file in the root directory based on the `.env.test.example` provided:
 
-```bash
-npm install
-npm test
+    ```bash
+    npm install
+    npm test
+
+    
+### setup for funtend
+just cd into frontend and then:
+
+    ```bash
+    npm run test
+
 
 
 
