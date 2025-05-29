@@ -5,6 +5,11 @@ import { JwtPayload } from "jsonwebtoken";
 
 export interface AuthenticatedRequest extends Request {
   user?: any;
+  body: any;
+  params: any;
+  headers: any;
+  cookies: any;
+  file?: Express.Multer.File;
 }
 
 export const verifyToken = async (
