@@ -23,6 +23,9 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
+app.get("/ping", (req, res) => {
+  res.status(200).send("pong");
+});
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/services", serviceRoutes);
