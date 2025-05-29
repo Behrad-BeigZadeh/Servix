@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm install
      
       - name: Install root dependencies
         run: npm install
