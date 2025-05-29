@@ -26,7 +26,12 @@ jobs:
       - name: Install root dependencies
         run: npm install
 
-    
+      - name: Create .env.test file
+        run: |
+         echo "${{ secrets.ENV_TEST }}" > backend/.env.test
+
+
+
       - name: Run backend tests
         run: npm test
 
