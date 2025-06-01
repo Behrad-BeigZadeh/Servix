@@ -66,7 +66,7 @@ const MyBookings = () => {
   const router = useRouter();
   const { data, isError, isLoading, error } = useQuery({
     queryKey: ["clientBookings"],
-    queryFn: () => getBookings(accessToken),
+    queryFn: () => getBookings(),
   });
 
   const chatRoomMutation = useMutation({

@@ -19,7 +19,7 @@ const ProviderServices = () => {
     error,
   } = useQuery({
     queryKey: ["services"],
-    queryFn: () => getProviderServices(user?.id, accessToken),
+    queryFn: () => getProviderServices(user?.id),
     enabled: !!user?.id && !!accessToken,
     select: (res) => res.data,
   });

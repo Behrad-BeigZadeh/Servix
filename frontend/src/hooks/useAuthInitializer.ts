@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
+import { useSocketStore } from "@/stores/socketStore";
 
 export const useAuthInitializer = () => {
   const { setAccessToken, setUser, logout } = useUserStore();
@@ -16,10 +17,12 @@ export const useAuthInitializer = () => {
 
         setAccessToken(data.data.accessToken);
         setUser(data.data.user);
-        console.log("🔄 Session restored from refresh token");
+        useSocketStore.getState().connect();
+
+        console.log(" Session restored from refresh token");
       } catch (err) {
         logout();
-        console.log("⚠️ No valid session", err);
+        console.log(" No valid session", err);
       }
     };
 

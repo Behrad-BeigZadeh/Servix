@@ -1,15 +1,12 @@
-import axios from "axios";
+import api from "@/lib/axios";
 
-export const createService = async (
-  formData: {
-    title: string;
-    description: string;
-    price: string;
-    categoryId: string;
-    image: File | null;
-  },
-  accessToken: string
-) => {
+export const createService = async (formData: {
+  title: string;
+  description: string;
+  price: string;
+  categoryId: string;
+  image: File | null;
+}) => {
   try {
     const data = new FormData();
     data.append("title", formData.title);
@@ -20,18 +17,7 @@ export const createService = async (
       data.append("image", formData.image);
     }
 
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services`,
-      data,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
+    const res = await api.post("/api/services", data);
     return res.data;
   } catch (error) {
     console.log("Error creating service:", error);
@@ -47,171 +33,91 @@ export const updateService = async (
     price: string;
     image: File | null;
   },
-  accessToken: string,
   serviceId: string
 ) => {
-  const data = new FormData();
-  data.append("title", formData.title);
-  data.append("description", formData.description);
-  data.append("categoryId", formData.categoryId);
-  data.append("price", formData.price);
-  if (formData.image) {
-    data.append("image", formData.image);
-  }
-
   try {
-    const res = await axios.put(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services/${serviceId}`,
-      data,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description);
+    data.append("categoryId", formData.categoryId);
+    data.append("price", formData.price);
+    if (formData.image) {
+      data.append("image", formData.image);
+    }
 
+    const res = await api.put(`/api/services/${serviceId}`, data);
     return res.data;
   } catch (error) {
     console.log("Error updating service:", error);
     throw error;
   }
 };
-export const fetchCategories = async () => {
+
+export const deleteService = async (serviceId: string | null) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`,
-
-      { withCredentials: true }
-    );
-
+    const res = await api.delete(`/api/services/${serviceId}`);
     return res.data;
   } catch (err) {
-    console.log("error in fetching categories", err);
+    console.log("Error deleting service:", err);
     throw err;
   }
 };
 
 export const getAllServices = async () => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services`,
-      {
-        withCredentials: true,
-      }
-    );
-
+    const res = await api.get("/api/services");
     return res.data;
   } catch (err) {
-    console.log("error in fetching services", err);
+    console.log("Error fetching services", err);
     throw err;
   }
 };
 
 export const getFeaturedServices = async () => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services/featured`,
-      {
-        withCredentials: true,
-      }
-    );
-
+    const res = await api.get("/api/services/featured");
     return res.data;
   } catch (err) {
-    console.log("error in fetching featured services", err);
+    console.log("Error fetching featured services", err);
     throw err;
   }
 };
 
 export const getSingleService = async (serviceId: string) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services/${serviceId}`,
-      {
-        withCredentials: true,
-      }
-    );
-
+    const res = await api.get(`/api/services/${serviceId}`);
     return res.data;
   } catch (err) {
-    console.log("error in fetching service", err);
+    console.log("Error fetching service", err);
     throw err;
   }
 };
 
-export const getProviderServices = async (
-  providerId: string | undefined,
-  accessToken: string | null
-) => {
+export const getProviderServices = async (providerId: string | undefined) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services/provider/${providerId}`,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
+    const res = await api.get(`/api/services/provider/${providerId}`);
     return res.data;
   } catch (err) {
-    console.log("error in fetching provider services", err);
+    console.log("Error fetching provider services", err);
     throw err;
   }
 };
 
-export const getPendingCounts = async (accessToken: string | null) => {
+export const fetchCategories = async () => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookings/pending-count`,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
+    const res = await api.get("/api/categories");
     return res.data;
   } catch (err) {
-    console.log("error in fetching services", err);
-    throw err;
-  }
-};
-export const deleteService = async (
-  serviceId: string | null,
-  accessToken: string | null
-) => {
-  try {
-    const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services/${serviceId}`,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
-    return res.data;
-  } catch (err) {
-    console.log("error in deleting service", err);
+    console.log("Error fetching categories", err);
     throw err;
   }
 };
 
 export const fetchServicesByCategory = async (category: string) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories/services`,
-      {
-        params: { category },
-      }
-    );
-
+    const res = await api.get("/api/categories/services", {
+      params: { category },
+    });
     return res.data;
   } catch (err) {
     console.log("Error fetching services by category:", err);

@@ -17,6 +17,7 @@
     "dayjs": "^1.11.13",
     "devtools": "^8.42.0",
     "embla-carousel-react": "^8.6.0",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.507.0",
     "next": "15.3.1",
     "postcss": "^8.4.38",

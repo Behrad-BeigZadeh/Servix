@@ -58,13 +58,11 @@ const EditServicePage = () => {
   const mutation = useMutation({
     mutationFn: ({
       formData,
-      accessToken,
       serviceId,
     }: {
       formData: CreateServiceFormData;
-      accessToken: string;
       serviceId: string;
-    }) => updateService(formData, accessToken, serviceId),
+    }) => updateService(formData, serviceId),
     onSuccess: () => {
       toast.success("Service updated!");
       router.push("/services/my-services");
@@ -99,7 +97,7 @@ const EditServicePage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!accessToken) return toast.error("Unauthorized");
-    mutation.mutate({ formData, accessToken, serviceId: serviceId as string });
+    mutation.mutate({ formData, serviceId: serviceId as string });
   };
 
   if (isServiceLoading) {

@@ -62,7 +62,7 @@ const ServiceCard = ({
 
   // cancel booking by client
   const cancelMutation = useMutation({
-    mutationFn: (bookingId: string) => cancelBooking(accessToken, bookingId),
+    mutationFn: (bookingId: string) => cancelBooking(bookingId),
     onSuccess: () => {
       toast.success("Booking cancelled successfully");
       queryClient.invalidateQueries({ queryKey: ["clientBookings"] });

@@ -63,19 +63,19 @@ const statusIcons: Record<string, JSX.Element> = {
 const ProviderBookings = () => {
   const [bookings, setBookings] = useState<BookingType[]>([]);
   const [selectedStatus, setSelectedStatus] = useState("ALL");
-  const { accessToken, user } = useUserStore();
+  const { user } = useUserStore();
   const router = useRouter();
 
   const queryClient = useQueryClient();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["providerBookings"],
-    queryFn: () => getProviderBookings(accessToken),
+    queryFn: () => getProviderBookings(),
   });
 
   // Complete Booking Mutation
   const completeBookingMutation = useMutation({
     mutationFn: ({ bookingId }: { bookingId: string }) =>
-      completeBooking(accessToken, bookingId),
+      completeBooking(bookingId),
     onSuccess: () => {
       toast.success("Booking status updated successfully");
       queryClient.invalidateQueries({ queryKey: ["providerBookings"] });
@@ -103,7 +103,7 @@ const ProviderBookings = () => {
     }: {
       bookingId: string;
       newStatus: string;
-    }) => updateBookingStatus(accessToken, bookingId, newStatus),
+    }) => updateBookingStatus(bookingId, newStatus),
     onSuccess: () => {
       toast.success("Booking status updated successfully");
       queryClient.invalidateQueries({ queryKey: ["providerBookings"] });

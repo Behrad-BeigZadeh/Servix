@@ -1,25 +1,8 @@
-import axios from "axios";
+import api from "@/lib/axios";
 
-export const createBooking = async (
-  accessToken: string,
-  serviceId: string,
-  date: string
-) => {
+export const createBooking = async (serviceId: string, date: string) => {
   try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookings`,
-      {
-        serviceId,
-        date,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      }
-    );
-
+    const res = await api.post("/api/bookings", { serviceId, date });
     return res.data;
   } catch (error) {
     console.log("Error creating booking:", error);
@@ -27,17 +10,9 @@ export const createBooking = async (
   }
 };
 
-export const getBookings = async (accessToken: string | null) => {
+export const getBookings = async () => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookings/client`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      }
-    );
+    const res = await api.get("/api/bookings/client");
     return res.data;
   } catch (error) {
     console.log("Error fetching bookings:", error);
@@ -45,39 +20,19 @@ export const getBookings = async (accessToken: string | null) => {
   }
 };
 
-export const getProviderBookings = async (accessToken: string | null) => {
+export const getProviderBookings = async () => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookings/provider`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      }
-    );
+    const res = await api.get("/api/bookings/provider");
     return res.data;
   } catch (error) {
-    console.log("Error fetching bookings:", error);
+    console.log("Error fetching provider bookings:", error);
     throw error;
   }
 };
 
-export const cancelBooking = async (
-  accessToken: string | null,
-  bookingId: string
-) => {
+export const cancelBooking = async (bookingId: string) => {
   try {
-    const res = await axios.patch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookings/${bookingId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      }
-    );
+    const res = await api.patch(`/api/bookings/${bookingId}`, {});
     return res.data;
   } catch (error) {
     console.log("Error canceling booking:", error);
@@ -86,21 +41,13 @@ export const cancelBooking = async (
 };
 
 export const updateBookingStatus = async (
-  accessToken: string | null,
   bookingId: string,
   status: string
 ) => {
   try {
-    const res = await axios.patch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookings/status/${bookingId}`,
-      { status },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      }
-    );
+    const res = await api.patch(`/api/bookings/status/${bookingId}`, {
+      status,
+    });
     return res.data;
   } catch (error) {
     console.log("Error updating booking:", error);
@@ -108,24 +55,22 @@ export const updateBookingStatus = async (
   }
 };
 
-export const completeBooking = async (
-  accessToken: string | null,
-  bookingId: string
-) => {
+export const completeBooking = async (bookingId: string) => {
   try {
-    const res = await axios.patch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/bookings/${bookingId}/complete`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      }
-    );
+    const res = await api.patch(`/api/bookings/${bookingId}/complete`, {});
     return res.data;
   } catch (error) {
-    console.log("Error canceling booking:", error);
+    console.log("Error completing booking:", error);
     throw error;
+  }
+};
+
+export const getPendingCounts = async () => {
+  try {
+    const res = await api.get(`/api/bookings/pending-count`);
+    return res.data;
+  } catch (err) {
+    console.log("Error fetching pending booking count", err);
+    throw err;
   }
 };

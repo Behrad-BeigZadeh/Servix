@@ -8,8 +8,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { handleLogout } from "@/api/auth/authApi";
 import toast from "react-hot-toast";
 import { useSocketStore } from "@/stores/socketStore";
-import { getPendingCounts } from "@/api/services/servicesApi";
 import { getTotalUnseenMessages } from "@/api/chat/chatApi";
+import { getPendingCounts } from "@/api/bookings/bookingsApi";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function Navbar() {
 
   const { data: pendingCount } = useQuery({
     queryKey: ["pendingBookingsCount", user?.id],
-    queryFn: () => getPendingCounts(accessToken),
+    queryFn: () => getPendingCounts(),
     enabled: user?.role === "PROVIDER" && !!accessToken,
   });
 

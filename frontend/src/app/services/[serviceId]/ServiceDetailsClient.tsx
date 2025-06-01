@@ -25,8 +25,7 @@ export default function ServiceDetailsClient({ serviceId }: Props) {
   });
 
   const bookingMutation = useMutation({
-    mutationFn: () =>
-      createBooking(accessToken!, serviceId, new Date().toISOString()),
+    mutationFn: () => createBooking(serviceId, new Date().toISOString()),
     onSuccess: () => {
       toast.success("Booking request sent!");
       router.push("/bookings/my-bookings");

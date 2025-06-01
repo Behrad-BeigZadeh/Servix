@@ -46,11 +46,10 @@ const CreateServicePage = () => {
   const mutation = useMutation({
     mutationFn: ({
       formData,
-      accessToken,
     }: {
       formData: CreateServiceFormData;
       accessToken: string;
-    }) => createService(formData, accessToken),
+    }) => createService(formData),
     onSuccess: () => {
       toast.success("Service created!");
       router.push("/services");
