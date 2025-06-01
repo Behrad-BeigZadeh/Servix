@@ -24,7 +24,7 @@ export default function Navbar() {
 
   const { data: unseenMessages } = useQuery({
     queryKey: ["unseenMessagesCount", user?.id],
-    queryFn: () => getTotalUnseenMessages(accessToken),
+    queryFn: () => getTotalUnseenMessages(),
     enabled: !!accessToken && !!user,
   });
 

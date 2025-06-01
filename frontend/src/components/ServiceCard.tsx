@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteService } from "@/api/services/servicesApi";
-import { useUserStore } from "@/stores/userStore";
 import toast from "react-hot-toast";
 import { cancelBooking } from "@/api/bookings/bookingsApi";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 type ServiceCardProps = {
   serviceId: string;
@@ -32,18 +32,19 @@ const ServiceCard = ({
   bookingId,
   status,
 }: ServiceCardProps) => {
-  const { accessToken } = useUserStore();
   const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<"delete" | "cancel" | null>(null);
+  const router = useRouter();
 
   // delete a service by provider
   const deleteMutation = useMutation({
-    mutationFn: (serviceId: string) => deleteService(serviceId, accessToken),
+    mutationFn: (serviceId: string) => deleteService(serviceId),
     onSuccess: () => {
       toast.success("Service deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["services"] });
       setShowModal(false);
+      router.replace("/services/my-services");
     },
     onError: (error: AxiosError<{ error: string }>) => {
       if (error.response?.data?.error) {

@@ -17,10 +17,10 @@ interface ChatRoom {
 
 const ChatList = () => {
   const [chats, setChats] = useState<ChatRoom[]>([]);
-  const { accessToken, user } = useUserStore();
+  const { user } = useUserStore();
   const { data, isError, isLoading, error } = useQuery({
     queryKey: ["chats", user?.id],
-    queryFn: async () => getAllChats(accessToken),
+    queryFn: async () => getAllChats(),
   });
 
   useEffect(() => {

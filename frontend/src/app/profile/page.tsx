@@ -8,7 +8,7 @@ import { fetchAuthUser, updateProfile } from "@/api/user/usersApi";
 import { AxiosError } from "axios";
 
 const MyProfile = () => {
-  const { accessToken, setUser } = useUserStore();
+  const { setUser } = useUserStore();
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -19,12 +19,11 @@ const MyProfile = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["authUser"],
-    queryFn: () => fetchAuthUser(accessToken),
+    queryFn: () => fetchAuthUser(),
   });
 
   const updateMutation = useMutation({
-    mutationFn: (updatedData: typeof formData) =>
-      updateProfile(accessToken, updatedData),
+    mutationFn: (updatedData: typeof formData) => updateProfile(updatedData),
     onSuccess: (data) => {
       setUser(data.data);
       toast.success("Profile updated!");

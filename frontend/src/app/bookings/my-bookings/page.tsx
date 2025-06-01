@@ -70,8 +70,7 @@ const MyBookings = () => {
   });
 
   const chatRoomMutation = useMutation({
-    mutationFn: (providerId: string) =>
-      startOrGetChatRoom(providerId, accessToken),
+    mutationFn: (providerId: string) => startOrGetChatRoom(providerId),
     onSuccess: (data) => {
       const roomId = data.chatRoom.id;
       toast.success("Chat started!");

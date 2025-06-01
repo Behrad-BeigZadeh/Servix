@@ -91,30 +91,3 @@ export const updateProfile = async (
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-
-export const getUserServices = async (
-  req: UserIdParamRequest,
-  res: Response
-): Promise<any> => {
-  try {
-    const user = await prisma.user.findFirst({
-      where: { id: req.params.id, role: "PROVIDER" },
-      include: {
-        services: true,
-      },
-    });
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const services = await prisma.service.findMany({
-      where: { providerId: req.params.id },
-    });
-
-    return res.status(200).json({ data: { services } });
-  } catch (error) {
-    console.log("Error in getUserServices controller:", error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-};

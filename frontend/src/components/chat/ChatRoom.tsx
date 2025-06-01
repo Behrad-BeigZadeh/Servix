@@ -26,7 +26,7 @@ interface Message {
 }
 
 const ChatRoom = ({ chatRoomId }: { chatRoomId: string }) => {
-  const { accessToken, user } = useUserStore();
+  const { user } = useUserStore();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMsg, setNewMsg] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -34,11 +34,10 @@ const ChatRoom = ({ chatRoomId }: { chatRoomId: string }) => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["messages", chatRoomId],
-    queryFn: () => getChatRoomMessages(chatRoomId as string, accessToken),
+    queryFn: () => getChatRoomMessages(chatRoomId as string),
   });
   const markSeenMutation = useMutation({
-    mutationFn: (messageId: string) =>
-      markMessagesAsSeen(messageId, accessToken),
+    mutationFn: (messageId: string) => markMessagesAsSeen(messageId),
     onError: (error: AxiosError<{ error: string }>) => {
       const errorMessage = error.response?.data?.error;
       toast.error(
@@ -66,7 +65,7 @@ const ChatRoom = ({ chatRoomId }: { chatRoomId: string }) => {
     }: {
       chatRoomId: string;
       content: string;
-    }) => sendMessage(chatRoomId, content, accessToken),
+    }) => sendMessage(chatRoomId, content),
     onSuccess: (newMessage) => {
       console.log("Fetched data:", data);
       setMessages((prev) => {
