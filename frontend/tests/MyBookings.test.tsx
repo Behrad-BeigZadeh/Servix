@@ -104,10 +104,7 @@ describe("MyBookings", () => {
     fireEvent.click(chatButton);
 
     await waitFor(() => {
-      expect(startOrGetChatRoom).toHaveBeenCalledWith(
-        "provider-1",
-        mockAccessToken
-      );
+      expect(startOrGetChatRoom).toHaveBeenCalledWith("provider-1");
       expect(toast.success).toHaveBeenCalledWith("Chat started!");
     });
   });

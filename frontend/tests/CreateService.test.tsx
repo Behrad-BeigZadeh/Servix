@@ -126,16 +126,13 @@ describe("CreateServicePage", () => {
       fireEvent.submit(form);
 
       await waitFor(() => {
-        expect(createService).toHaveBeenCalledWith(
-          {
-            title: "Test Service for testing blah blah",
-            description: "Test description blah blah blah ....",
-            categoryId: "cat1",
-            price: "100",
-            image: expect.any(File),
-          },
-          "mockAccessToken"
-        );
+        expect(createService).toHaveBeenCalledWith({
+          title: "Test Service for testing blah blah",
+          description: "Test description blah blah blah ....",
+          categoryId: "cat1",
+          price: "100",
+          image: expect.any(File),
+        });
         expect(toast.success).toHaveBeenCalledWith("Service created!");
         expect(push).toHaveBeenCalledWith("/services");
       });
