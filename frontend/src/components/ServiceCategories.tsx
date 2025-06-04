@@ -17,11 +17,6 @@ import {
   Dumbbell,
   CalendarDays,
   Camera,
-  Music,
-  Languages,
-  Scale,
-  Banknote,
-  Megaphone,
 } from "lucide-react";
 import { GiSoap } from "react-icons/gi";
 import Link from "next/link";
@@ -42,11 +37,6 @@ const iconMap: Record<string, JSX.Element> = {
   "Fitness Training": <Dumbbell className="w-8 h-8 mb-2 text-purple-700" />,
   "Event Planning": <CalendarDays className="w-8 h-8 mb-2 text-rose-600" />,
   Photography: <Camera className="w-8 h-8 mb-2 text-gray-800" />,
-  "Music Lessons": <Music className="w-8 h-8 mb-2 text-indigo-500" />,
-  "Language Lessons": <Languages className="w-8 h-8 mb-2 text-teal-700" />,
-  "Legal Help": <Scale className="w-8 h-8 mb-2 text-red-700" />,
-  Accounting: <Banknote className="w-8 h-8 mb-2 text-green-700" />,
-  Marketing: <Megaphone className="w-8 h-8 mb-2 text-blue-800" />,
 };
 
 const ServiceCategories = () => {
@@ -89,9 +79,7 @@ const ServiceCategories = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
               {categories.map((cat) => (
                 <Link
-                  href={`/categories/${cat.name}?category=${encodeURIComponent(
-                    cat.name
-                  )}`}
+                  href={`/categories/${encodeURIComponent(cat.name)}`}
                   key={cat.id}
                 >
                   <div className="flex flex-col text-center  items-center p-6 bg-zinc-100 rounded-xl shadow hover:shadow-md transition hover:scale-105 cursor-pointer">
