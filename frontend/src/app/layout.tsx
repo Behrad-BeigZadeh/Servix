@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className=" font-sans min-h-screen flex flex-col">
         <ClientProviders>
           <Navbar />
-          <main className="flex-grow w-full">{children}</main>
+          <main className="my-10 flex-grow w-full">{children}</main>
           <Footer />
         </ClientProviders>
       </body>

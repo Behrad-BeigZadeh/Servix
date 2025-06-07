@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
 import { useSocketStore } from "@/stores/socketStore";
+import { handleLogout } from "@/api/auth/authApi";
 
 export const useAuthInitializer = () => {
   const { setAccessToken, setUser, logout } = useUserStore();
@@ -21,6 +22,7 @@ export const useAuthInitializer = () => {
 
         console.log(" Session restored from refresh token");
       } catch (err) {
+        await handleLogout();
         logout();
         console.log(" No valid session", err);
       }

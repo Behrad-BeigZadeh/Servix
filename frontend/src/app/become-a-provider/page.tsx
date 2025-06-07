@@ -11,8 +11,10 @@ const BecomeProviderPage = () => {
 
   const handleCreateServiceClick = () => {
     if (accessToken && user?.role === "PROVIDER") {
+      console.log("Redirecting to /create-service");
       router.push("/create-service");
     } else {
+      console.log("Redirecting to /auth/signup");
       router.push("/auth/signup");
     }
   };
