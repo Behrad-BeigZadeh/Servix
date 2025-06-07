@@ -22,9 +22,17 @@ export const useAuthInitializer = () => {
 
         console.log(" Session restored from refresh token");
       } catch (err) {
-        await handleLogout();
-        logout();
-        console.log(" No valid session", err);
+        if (axios.isAxiosError(err)) {
+          if (err.response?.status === 401) {
+            await handleLogout();
+            useSocketStore.getState().disconnect();
+            logout();
+          } else {
+            console.warn(
+              "Server issue or network error, not logging out immediately."
+            );
+          }
+        }
       }
     };
 

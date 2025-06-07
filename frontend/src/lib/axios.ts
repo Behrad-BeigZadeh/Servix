@@ -35,14 +35,20 @@ api.interceptors.request.use(async (config) => {
         setUser(data.data.user);
         config.headers.Authorization = `Bearer ${data.data.accessToken}`;
 
-        // Reconnect socket after successful refresh
         useSocketStore.getState().connect();
       } catch (err) {
-        console.error("Refresh token failed inside interceptor", err);
-        await handleLogout();
-        useSocketStore.getState().disconnect(); // Disconnect socket on failure
-        logout();
-        throw err;
+        if (axios.isAxiosError(err)) {
+          if (err.response?.status === 401) {
+            await handleLogout();
+            useSocketStore.getState().disconnect();
+            logout();
+            throw err;
+          } else {
+            console.warn(
+              "Server issue or network error, not logging out immediately."
+            );
+          }
+        }
       } finally {
         isRefreshing = false;
       }
