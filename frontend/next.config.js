@@ -10,6 +10,10 @@ const nextConfig = {
     ],
     domains: ["images.pexels.com", "res.cloudinary.com"],
   },
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
 };
 
 module.exports = nextConfig;

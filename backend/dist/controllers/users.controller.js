@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserServices = exports.updateProfile = exports.authUser = void 0;
+exports.updateProfile = exports.authUser = void 0;
 const prisma_1 = require("../lib/prisma");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const userSchema_1 = require("../schemas/userSchema");
@@ -27,7 +27,6 @@ const authUser = async (req, res) => {
         });
     }
     catch (error) {
-        console.log("Error in authUser controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -76,30 +75,7 @@ const updateProfile = async (req, res) => {
         });
     }
     catch (error) {
-        console.log("Error in updateProfile controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
 exports.updateProfile = updateProfile;
-const getUserServices = async (req, res) => {
-    try {
-        const user = await prisma_1.prisma.user.findFirst({
-            where: { id: req.params.id, role: "PROVIDER" },
-            include: {
-                services: true,
-            },
-        });
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
-        const services = await prisma_1.prisma.service.findMany({
-            where: { providerId: req.params.id },
-        });
-        return res.status(200).json({ data: { services } });
-    }
-    catch (error) {
-        console.log("Error in getUserServices controller:", error);
-        return res.status(500).json({ error: "Internal server error" });
-    }
-};
-exports.getUserServices = getUserServices;

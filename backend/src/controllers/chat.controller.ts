@@ -57,7 +57,6 @@ export const getAllUsersChats = async (
 
     return res.status(200).json({ allChats: chatsWithUnseenCount });
   } catch (error) {
-    console.error("Error in getAllUsersChats controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -105,7 +104,6 @@ export const getChatRoomMessages = async (
 
     return res.status(200).json({ messages, otherUser });
   } catch (error) {
-    console.error("Error in getChatRoomMessages controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -133,7 +131,6 @@ export const getTotalUnseenMessages = async (
 
     return res.status(200).json({ totalUnseen });
   } catch (error) {
-    console.error("Error fetching total unseen messages:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -193,7 +190,6 @@ export const startOrGetChatRoom = async (
 
     return res.status(201).json({ chatRoom: newChat, isNew: true });
   } catch (error) {
-    console.error("Failed to start chat room:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -276,7 +272,6 @@ export const sendMessage = async (
 
     return res.status(201).json({ message });
   } catch (error) {
-    console.error("Error in sendMessage controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -341,7 +336,6 @@ export const markMessageAsSeen = async (
 
     return res.status(200).json({ message: updatedMessage });
   } catch (error) {
-    console.error("Error in markMessageAsSeen:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

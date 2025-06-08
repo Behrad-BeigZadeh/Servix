@@ -33,7 +33,6 @@ export const authUser = async (
       },
     });
   } catch (error) {
-    console.log("Error in authUser controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -87,7 +86,6 @@ export const updateProfile = async (
       },
     });
   } catch (error) {
-    console.log("Error in updateProfile controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

@@ -10,7 +10,6 @@ const getAllCategories = async (req, res) => {
         res.status(200).json(categories);
     }
     catch (error) {
-        console.error("Failed to fetch categories", error);
         res.status(500).json({ error: "Failed to fetch categories" });
     }
 };
@@ -42,7 +41,6 @@ const getServicesByCategory = async (req, res) => {
         return res.json(services);
     }
     catch (error) {
-        console.error("Error fetching services by category:", error);
         return res.status(500).json({ message: "Server error" });
     }
 };

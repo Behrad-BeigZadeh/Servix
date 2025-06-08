@@ -9,5 +9,4 @@ const users_controller_1 = require("../controllers/users.controller");
 const router = express_1.default.Router();
 router.get("/auth-user", midddleware_1.verifyToken, users_controller_1.authUser);
 router.put("/auth-user", midddleware_1.verifyToken, users_controller_1.updateProfile);
-router.get("/:id/services", users_controller_1.getUserServices);
 exports.default = router;

@@ -38,7 +38,6 @@ export const getClientBookings = async (
 
     return res.status(200).json({ data: bookings });
   } catch (error) {
-    console.error("Error getting client bookings controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -81,7 +80,6 @@ export const getBookingsForProvider = async (
 
     return res.status(200).json({ data: bookings });
   } catch (error) {
-    console.error("Error getting provider bookings controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -123,7 +121,6 @@ export const getBookingDetails = async (
 
     return res.status(200).json({ data: booking });
   } catch (error) {
-    console.error("Error getting booking details controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -149,7 +146,6 @@ export const getPendingBookingsCount = async (
 
     return res.status(200).json({ count });
   } catch (error) {
-    console.error("Error fetching pending bookings count:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -237,7 +233,6 @@ export const createBooking = async (
 
     return res.status(201).json({ data: booking });
   } catch (error) {
-    console.error("Error creating booking controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -300,7 +295,6 @@ export const updateBookingStatus = async (
 
     return res.status(200).json({ data: updatedBooking });
   } catch (error) {
-    console.error("Error updating booking status controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -347,7 +341,6 @@ export const completeBooking = async (
 
     return res.status(200).json({ data: updatedBooking });
   } catch (error) {
-    console.error("Error in completeBooking controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -392,7 +385,6 @@ export const cancelBooking = async (
       return res.status(400).json({ error: "Booking cannot be canceled" });
     }
   } catch (error) {
-    console.error("Error canceling booking controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

@@ -7,6 +7,7 @@ const prisma_1 = require("../generated/prisma");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const prisma = new prisma_1.PrismaClient();
 async function main() {
+    console.log("🧹 Cleaning existing data...");
     await prisma.booking.deleteMany();
     await prisma.service.deleteMany();
     await prisma.category.deleteMany();
@@ -28,23 +29,6 @@ async function main() {
         "Event Planning",
         "Photography",
     ];
-    const titles = [
-        "Deep Home Cleaning",
-        "Math Tutoring for High School",
-        "Same-day Package Delivery",
-        "Emergency Plumbing Services",
-        "Certified Electrician Help",
-        "Local Moving Service",
-        "Spa & Massage Therapy",
-        "Dog Walking and Sitting",
-        "Furniture Repair",
-        "PC & Laptop Fix",
-        "Lawn Mowing and Gardening",
-        "Custom Woodwork",
-        "Personal Fitness Coaching",
-        "Birthday Party Planning",
-        "Professional Portrait Photography",
-    ];
     const descriptions = [
         "High-quality and thorough service for your needs.",
         "Certified and experienced provider ready to help.",
@@ -56,79 +40,80 @@ async function main() {
         {
             title: "Deep Home Cleaning",
             category: "Cleaning",
-            image: "https://www.shineglow.in/images/services/ser-img6.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685837/ser-img6_fkbxwj.jpg",
         },
         {
             title: "Math Tutoring for High School",
             category: "Tutoring",
-            image: "https://www.teachersoncall.ca/files/teachers-on-call-math-tutoring-1-2.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685855/teachers-on-call-math-tutoring-1-2_ssfdea.jpg",
         },
         {
             title: "Same-day Package Delivery",
             category: "Delivery",
-            image: "https://www.pymnts.com/wp-content/uploads/2022/04/Postal-Delivery-Package.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685877/Postal-Delivery-Package_vi2eq9.jpg",
         },
         {
             title: "Emergency Plumbing Services",
             category: "Plumbing",
-            image: "https://www.powerhouseswfl.com/images/blog/plumbing%20services.jpeg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685891/plumbing_20services_f8in8a.jpg",
         },
         {
             title: "Certified Electrician Help",
             category: "Electrician",
-            image: "https://static.cms.yp.ca/ecms/media/1/16220498_lel-1445280588-600x360.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685898/16220498_lel-1445280588-600x360_ajhein.jpg",
         },
         {
             title: "Local Moving Service",
             category: "Moving",
-            image: "https://www.jkmoving.com/app/uploads/2024/09/movers-in-virginia-aspect-ratio-1000-688-aspect-ratio-1000-688-6.png",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685917/movers-in-virginia-aspect-ratio-1000-688-aspect-ratio-1000-688-6_mr4prh.png",
         },
         {
             title: "Spa & Massage Therapy",
             category: "Beauty & Wellness",
-            image: "https://www.nextlevelurgentcare.com/wp-content/uploads/2022/06/massageTherapy-636218646-770x553-1.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685938/massageTherapy-636218646-770x553-1_athhz0.jpg",
         },
         {
             title: "Dog Walking and Sitting",
             category: "Pet Care",
-            image: "https://bluecrossvethospital.com/wp-content/uploads/2018/01/4-Benefits-of-Walking-Your-Dog.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685950/4-Benefits-of-Walking-Your-Dog_mopxdx.jpg",
         },
         {
             title: "Furniture Repair",
             category: "Home Repair",
-            image: "https://admin.craftscouncil.org.uk/images/tdkvQ3Ykoo-h_OLJ0bzZhpJsn5Y=/36605/format-webp%7Cwidth-990/VicPhillips_Goodlife_Upholstery_Restoration_AdvCarpentry_Southwark_London_.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685956/VicPhillips_Goodlife_Upholstery_Restoration_AdvCarpentry_Southwark_London__ob7ava.webp",
         },
         {
             title: "PC & Laptop Fix",
             category: "Tech Support",
-            image: "https://images.ctfassets.net/16nm6vz43ids/7g9t8d7WaVz7BM1L9RmrCl/9f42265945660d42d58111bf3e169aab/Repair_or_replace_laptop.png?fm=webp&q=65",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685980/Repair_or_replace_laptop_jqf6o0.webp",
         },
         {
             title: "Lawn Mowing and Gardening",
             category: "Gardening",
-            image: "https://assets.clevelandclinic.org/transform/e5eab4e9-d43a-4c81-a596-c218b74ceadf/womanGardening-93909596_jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748685995/womanGardening-93909596_jpg_jojvui.jpg",
         },
         {
             title: "Custom Woodwork",
             category: "Carpentry",
-            image: "https://silentrivers.com/wp-content/uploads/2017/05/Scrap-wood-console-table-Alex-Schlepphorst-Silent-Rivers.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748686007/Scrap-wood-console-table-Alex-Schlepphorst-Silent-Rivers_jikmxn.jpg",
         },
         {
             title: "Personal Fitness Coaching",
             category: "Fitness Training",
-            image: "https://www.julienutrition.com/wp-content/uploads/2024/11/Personal-Trainer-Strength-Conditioning-and-Fitness-Coach-JM-Nutrition.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748686022/Personal-Trainer-Strength-Conditioning-and-Fitness-Coach-JM-Nutrition_slyccg.jpg",
         },
         {
             title: "Birthday Party Planning",
             category: "Event Planning",
-            image: "https://www.letsroam.com/explorer/wp-content/uploads/sites/10/2022/03/how-to-plan-a-birthday-party.jpg",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748686037/how-to-plan-a-birthday-party_qn1oku.jpg",
         },
         {
             title: "Professional Portrait Photography",
             category: "Photography",
-            image: "https://images.squarespace-cdn.com/content/v1/572e050c4d088ea3a8f0ac9d/1652567773148-V0S2AG6YR65EVB0T522U/Thomas_Alston-2144-PRINT.jpg?format=1000w",
+            image: "https://res.cloudinary.com/dc0quhvpm/image/upload/v1748686044/Thomas_Alston-2144-PRINT_oo4wil.jpg",
         },
     ];
+    console.log("📂 Upserting categories...");
     for (const name of categories) {
         await prisma.category.upsert({
             where: { name },
@@ -140,9 +125,10 @@ async function main() {
     const providerData = [
         { name: "David", email: "david@example.com" },
         { name: "Sarah", email: "sarah@example.com" },
-        { name: "Zack", email: "Zack@example.com" },
+        { name: "Zack", email: "zack@example.com" },
     ];
     const hashedPassword = await bcryptjs_1.default.hash("password123", 10);
+    console.log("👤 Upserting providers...");
     const providers = await Promise.all(providerData.map((p) => prisma.user.upsert({
         where: { email: p.email },
         update: {},
@@ -153,6 +139,7 @@ async function main() {
             password: hashedPassword,
         },
     })));
+    console.log("📋 Creating services...");
     for (const provider of providers) {
         for (const { title, category, image } of serviceData) {
             const cat = allCategories.find((c) => c.name === category);
@@ -163,15 +150,20 @@ async function main() {
                     title,
                     description: descriptions[Math.floor(Math.random() * descriptions.length)],
                     price: parseFloat((Math.random() * 150 + 50).toFixed(2)),
-                    images: [image], // Use only one relevant image
+                    images: [image],
                     providerId: provider.id,
                     categoryId: cat.id,
                 },
             });
         }
     }
+    console.log("✅ Seeding complete.");
 }
 main()
-    .then(() => console.log("✅ Seeding complete"))
-    .catch((e) => console.error("❌ Error during seeding:", e))
-    .finally(() => prisma.$disconnect());
+    .catch((e) => {
+    console.error("❌ Error during seeding:", e);
+})
+    .finally(async () => {
+    await prisma.$disconnect();
+    console.log("🔌 Prisma disconnected.");
+});

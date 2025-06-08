@@ -1,10 +1,12 @@
 import { PrismaClient } from "../generated/prisma";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Using DB:", process.env.DATABASE_URL);
 
+  // Clear data in correct dependency order
   await prisma.notification.deleteMany();
   await prisma.message.deleteMany();
   await prisma.chatRoom.deleteMany();
@@ -13,30 +15,42 @@ async function main() {
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
 
-  const client = await prisma.user.create({
-    data: {
+  const hashedPassword = await bcrypt.hash("password123", 10);
+
+  // Create client user
+  const client = await prisma.user.upsert({
+    where: { email: "client@test.com" },
+    update: {},
+    create: {
       username: "clientuser",
       email: "client@test.com",
-      password: "hashedpassword",
+      password: hashedPassword,
       role: "CLIENT",
     },
   });
 
-  const provider = await prisma.user.create({
-    data: {
+  // Create provider user
+  const provider = await prisma.user.upsert({
+    where: { email: "provider@test.com" },
+    update: {},
+    create: {
       username: "provideruser",
       email: "provider@test.com",
-      password: "hashedpassword",
+      password: hashedPassword,
       role: "PROVIDER",
     },
   });
 
-  const category = await prisma.category.create({
-    data: {
+  // Create category
+  const category = await prisma.category.upsert({
+    where: { name: "Cleaning" },
+    update: {},
+    create: {
       name: "Cleaning",
     },
   });
 
+  // Create a service linked to provider and category
   const service = await prisma.service.create({
     data: {
       title: "Test Cleaning",
@@ -48,6 +62,7 @@ async function main() {
     },
   });
 
+  // Create a booking linked to client and service
   await prisma.booking.create({
     data: {
       date: new Date(),
@@ -59,10 +74,12 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
+  .then(async () => {
+    console.log("✅ Seeding complete");
+    await prisma.$disconnect();
   })
-  .finally(() => {
-    prisma.$disconnect();
+  .catch(async (e) => {
+    console.error("❌ Error during seeding:", e);
+    await prisma.$disconnect();
+    process.exit(1);
   });

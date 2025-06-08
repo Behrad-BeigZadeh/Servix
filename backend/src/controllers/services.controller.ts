@@ -24,7 +24,6 @@ export const getAllServices = async (
 
     return res.status(200).json({ data: services });
   } catch (error) {
-    console.log("Error in getAllServices controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -53,7 +52,6 @@ export const getFeaturedServices = async (
 
     return res.status(200).json({ data: featuredServices });
   } catch (error) {
-    console.error("Error in getFeaturedServices controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -87,7 +85,6 @@ export const getProviderServices = async (
 
     return res.status(200).json({ data: services });
   } catch (error) {
-    console.error("Error in getProviderServices controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -115,7 +112,6 @@ export const getSingleService = async (
     }
     return res.status(200).json({ data: service });
   } catch (error) {
-    console.log("Error in getSingleService controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -182,7 +178,6 @@ export const createService = async (
         stream.end(file.buffer);
       });
     } catch (uploadError) {
-      console.error("Cloudinary upload error:", uploadError);
       return res.status(400).json({ error: "Invalid image file" });
     }
 
@@ -200,7 +195,6 @@ export const createService = async (
 
     return res.status(200).json({ data: service });
   } catch (error) {
-    console.error("Error in createService controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -282,7 +276,6 @@ export const updateService = async (
 
     return res.status(200).json({ data: updated });
   } catch (error) {
-    console.error("Error in updateService controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -323,7 +316,6 @@ export const deleteService = async (
 
     return res.status(200).json({ data: service });
   } catch (error) {
-    console.log("Error in deleteService controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

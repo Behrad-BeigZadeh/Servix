@@ -15,6 +15,7 @@ const category_route_1 = __importDefault(require("./routes/category.route"));
 const cors_1 = __importDefault(require("cors"));
 const socket_1 = require("./sockets/socket");
 const prisma_1 = require("./lib/prisma");
+const logger_1 = __importDefault(require("./lib/logger"));
 dotenv_1.default.config();
 const PORT = process.env.PORT || 5000;
 socket_1.app.use(express_1.default.json());
@@ -24,6 +25,9 @@ socket_1.app.use((0, cors_1.default)({
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }));
+socket_1.app.get("/ping", (req, res) => {
+    res.status(200).send("pong");
+});
 socket_1.app.use("/api/auth", auth_route_1.default);
 socket_1.app.use("/api/users", users_route_1.default);
 socket_1.app.use("/api/services", services_route_1.default);
@@ -31,13 +35,13 @@ socket_1.app.use("/api/bookings", bookings_route_1.default);
 socket_1.app.use("/api/chat", chat_route_1.default);
 socket_1.app.use("/api/categories", category_route_1.default);
 socket_1.server.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+    logger_1.default.info(`🚀 Server running on port ${PORT}`);
     prisma_1.prisma
         .$connect()
         .then(() => {
-        console.log("Connected to database successfully");
+        logger_1.default.info("Connected to database successfully");
     })
         .catch((error) => {
-        console.error("Error connecting to the database", error);
+        logger_1.default.error("Error connecting to the database", error);
     });
 });

@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
 import { RateLimiterMemory, RateLimiterRes } from "rate-limiter-flexible";
 import dotenv from "dotenv";
+import logger from "../lib/logger";
+
 dotenv.config();
 
 const messageRateLimiter = new RateLimiterMemory({
@@ -32,46 +34,62 @@ io.use(async (socket, next) => {
   const token = socket.handshake.auth.token;
 
   if (!token) {
-    console.error("❌ No token provided in handshake.auth");
+    logger.error("❌ No token provided in handshake.auth");
     return next(new Error("No token provided"));
   }
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!);
-    console.log("✅ Token decoded successfully:", decoded);
+    logger.info(
+      `✅ Token decoded successfully: userId=${(decoded as any).userId}`
+    );
     (socket as any).user = decoded;
     next();
   } catch (err) {
-    console.error("❌ JWT verification failed:", err);
+    logger.error(
+      `❌ JWT verification failed: ${err instanceof Error ? err.message : err}`
+    );
     next(new Error("Invalid token"));
   }
 });
 
 export const setupSocketHandlers = (io: Server) => {
   setTimeout(() => {
-    console.log("🕵️ Current userSocketMap after 5s:", [
-      ...userSocketMap.entries(),
-    ]);
+    logger.info(
+      `🕵️ Current userSocketMap after 5s: ${JSON.stringify([
+        ...userSocketMap.entries(),
+      ])}`
+    );
   }, 5000);
 
   io.on("connection", (socket: Socket) => {
     const user = (socket as any).user;
 
-    console.log("✅ User connected:", user.userId);
+    logger.info(`✅ User connected: ${user.userId}`);
 
     socket.join(user.userId);
-    console.log("📌 Joined socket room:", user.userId);
-    console.log("👥 Current socket rooms:", Array.from(socket.rooms));
+    logger.info(`📌 Joined socket room: ${user.userId}`);
+    logger.info(
+      `👥 Current socket rooms: ${JSON.stringify(Array.from(socket.rooms))}`
+    );
 
     userSocketMap.set(user.userId, socket.id);
-    console.log("🗺️ Updated userSocketMap:", [...userSocketMap.entries()]);
+    logger.info(
+      `🗺️ Updated userSocketMap: ${JSON.stringify([
+        ...userSocketMap.entries(),
+      ])}`
+    );
 
     socket.on("join_user_room", () => {
       const userId = user.userId;
       socket.join(userId);
       userSocketMap.set(userId, socket.id);
-      console.log(`📌 Joined socket room: ${userId}`);
-      console.log("🗺️ Updated userSocketMap:", [...userSocketMap.entries()]);
+      logger.info(`📌 Joined socket room: ${userId}`);
+      logger.info(
+        `🗺️ Updated userSocketMap: ${JSON.stringify([
+          ...userSocketMap.entries(),
+        ])}`
+      );
     });
 
     socket.on("join_room", async (chatRoomId: string) => {
@@ -81,7 +99,8 @@ export const setupSocketHandlers = (io: Server) => {
         });
 
         if (!chatRoom) {
-          return console.warn("❌ Chat room not found:", chatRoomId);
+          logger.warn(`❌ Chat room not found: ${chatRoomId}`);
+          return;
         }
 
         const isParticipant =
@@ -89,28 +108,36 @@ export const setupSocketHandlers = (io: Server) => {
           chatRoom.providerId === user.userId;
 
         if (!isParticipant) {
-          return console.warn(
+          logger.warn(
             `🚫 User ${user.userId} not allowed in room ${chatRoomId}`
           );
+          return;
         }
 
         socket.join(chatRoomId);
-        console.log(`📥 User ${user.userId} joined room: ${chatRoomId}`);
+        logger.info(`📥 User ${user.userId} joined room: ${chatRoomId}`);
       } catch (err) {
-        console.error("Error in join_room:", err);
+        logger.error(
+          `❌ Error in join_room (${chatRoomId}): ${
+            err instanceof Error ? err.message : err
+          }`
+        );
       }
     });
+
     socket.on("leave_room", (chatRoomId: string) => {
       socket.leave(chatRoomId);
-      console.log(`🚪 User ${user.userId} left room ${chatRoomId}`);
+      logger.info(`🚪 User ${user.userId} left room ${chatRoomId}`);
     });
 
     socket.on("disconnect", () => {
       userSocketMap.delete(user.userId);
-      console.log("❎ User disconnected:", user.userId);
-      console.log("🗺️ Updated userSocketMap after disconnect:", [
-        ...userSocketMap.entries(),
-      ]);
+      logger.info(`❎ User disconnected: ${user.userId}`);
+      logger.info(
+        `🗺️ Updated userSocketMap after disconnect: ${JSON.stringify([
+          ...userSocketMap.entries(),
+        ])}`
+      );
     });
   });
 };

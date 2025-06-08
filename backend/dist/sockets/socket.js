@@ -11,6 +11,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const prisma_1 = require("../lib/prisma");
 const rate_limiter_flexible_1 = require("rate-limiter-flexible");
 const dotenv_1 = __importDefault(require("dotenv"));
+const logger_1 = __importDefault(require("../lib/logger"));
 dotenv_1.default.config();
 const messageRateLimiter = new rate_limiter_flexible_1.RateLimiterMemory({
     points: 10, // 10 messages
@@ -35,40 +36,44 @@ exports.io = io;
 io.use(async (socket, next) => {
     const token = socket.handshake.auth.token;
     if (!token) {
-        console.error("❌ No token provided in handshake.auth");
+        logger_1.default.error("❌ No token provided in handshake.auth");
         return next(new Error("No token provided"));
     }
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        console.log("✅ Token decoded successfully:", decoded);
+        logger_1.default.info(`✅ Token decoded successfully: userId=${decoded.userId}`);
         socket.user = decoded;
         next();
     }
     catch (err) {
-        console.error("❌ JWT verification failed:", err);
+        logger_1.default.error(`❌ JWT verification failed: ${err instanceof Error ? err.message : err}`);
         next(new Error("Invalid token"));
     }
 });
 const setupSocketHandlers = (io) => {
     setTimeout(() => {
-        console.log("🕵️ Current userSocketMap after 5s:", [
+        logger_1.default.info(`🕵️ Current userSocketMap after 5s: ${JSON.stringify([
             ...exports.userSocketMap.entries(),
-        ]);
+        ])}`);
     }, 5000);
     io.on("connection", (socket) => {
         const user = socket.user;
-        console.log("✅ User connected:", user.userId);
+        logger_1.default.info(`✅ User connected: ${user.userId}`);
         socket.join(user.userId);
-        console.log("📌 Joined socket room:", user.userId);
-        console.log("👥 Current socket rooms:", Array.from(socket.rooms));
+        logger_1.default.info(`📌 Joined socket room: ${user.userId}`);
+        logger_1.default.info(`👥 Current socket rooms: ${JSON.stringify(Array.from(socket.rooms))}`);
         exports.userSocketMap.set(user.userId, socket.id);
-        console.log("🗺️ Updated userSocketMap:", [...exports.userSocketMap.entries()]);
+        logger_1.default.info(`🗺️ Updated userSocketMap: ${JSON.stringify([
+            ...exports.userSocketMap.entries(),
+        ])}`);
         socket.on("join_user_room", () => {
             const userId = user.userId;
             socket.join(userId);
             exports.userSocketMap.set(userId, socket.id);
-            console.log(`📌 Joined socket room: ${userId}`);
-            console.log("🗺️ Updated userSocketMap:", [...exports.userSocketMap.entries()]);
+            logger_1.default.info(`📌 Joined socket room: ${userId}`);
+            logger_1.default.info(`🗺️ Updated userSocketMap: ${JSON.stringify([
+                ...exports.userSocketMap.entries(),
+            ])}`);
         });
         socket.on("join_room", async (chatRoomId) => {
             try {
@@ -76,30 +81,32 @@ const setupSocketHandlers = (io) => {
                     where: { id: chatRoomId },
                 });
                 if (!chatRoom) {
-                    return console.warn("❌ Chat room not found:", chatRoomId);
+                    logger_1.default.warn(`❌ Chat room not found: ${chatRoomId}`);
+                    return;
                 }
                 const isParticipant = chatRoom.clientId === user.userId ||
                     chatRoom.providerId === user.userId;
                 if (!isParticipant) {
-                    return console.warn(`🚫 User ${user.userId} not allowed in room ${chatRoomId}`);
+                    logger_1.default.warn(`🚫 User ${user.userId} not allowed in room ${chatRoomId}`);
+                    return;
                 }
                 socket.join(chatRoomId);
-                console.log(`📥 User ${user.userId} joined room: ${chatRoomId}`);
+                logger_1.default.info(`📥 User ${user.userId} joined room: ${chatRoomId}`);
             }
             catch (err) {
-                console.error("Error in join_room:", err);
+                logger_1.default.error(`❌ Error in join_room (${chatRoomId}): ${err instanceof Error ? err.message : err}`);
             }
         });
         socket.on("leave_room", (chatRoomId) => {
             socket.leave(chatRoomId);
-            console.log(`🚪 User ${user.userId} left room ${chatRoomId}`);
+            logger_1.default.info(`🚪 User ${user.userId} left room ${chatRoomId}`);
         });
         socket.on("disconnect", () => {
             exports.userSocketMap.delete(user.userId);
-            console.log("❎ User disconnected:", user.userId);
-            console.log("🗺️ Updated userSocketMap after disconnect:", [
+            logger_1.default.info(`❎ User disconnected: ${user.userId}`);
+            logger_1.default.info(`🗺️ Updated userSocketMap after disconnect: ${JSON.stringify([
                 ...exports.userSocketMap.entries(),
-            ]);
+            ])}`);
         });
     });
 };

@@ -24,7 +24,6 @@ const getAllServices = async (req, res) => {
         return res.status(200).json({ data: services });
     }
     catch (error) {
-        console.log("Error in getAllServices controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -50,7 +49,6 @@ const getFeaturedServices = async (req, res) => {
         return res.status(200).json({ data: featuredServices });
     }
     catch (error) {
-        console.error("Error in getFeaturedServices controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -79,7 +77,6 @@ const getProviderServices = async (req, res) => {
         return res.status(200).json({ data: services });
     }
     catch (error) {
-        console.error("Error in getProviderServices controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -105,7 +102,6 @@ const getSingleService = async (req, res) => {
         return res.status(200).json({ data: service });
     }
     catch (error) {
-        console.log("Error in getSingleService controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -161,7 +157,6 @@ const createService = async (req, res) => {
             });
         }
         catch (uploadError) {
-            console.error("Cloudinary upload error:", uploadError);
             return res.status(400).json({ error: "Invalid image file" });
         }
         //  Step 4: Create the service in DB
@@ -178,7 +173,6 @@ const createService = async (req, res) => {
         return res.status(200).json({ data: service });
     }
     catch (error) {
-        console.error("Error in createService controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -247,7 +241,6 @@ const updateService = async (req, res) => {
         return res.status(200).json({ data: updated });
     }
     catch (error) {
-        console.error("Error in updateService controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -282,7 +275,6 @@ const deleteService = async (req, res) => {
         return res.status(200).json({ data: service });
     }
     catch (error) {
-        console.log("Error in deleteService controller:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 };

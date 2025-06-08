@@ -4,10 +4,12 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log("🧹 Cleaning existing data...");
   await prisma.booking.deleteMany();
   await prisma.service.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
+
   const categories = [
     "Cleaning",
     "Tutoring",
@@ -24,24 +26,6 @@ async function main() {
     "Fitness Training",
     "Event Planning",
     "Photography",
-  ];
-
-  const titles = [
-    "Deep Home Cleaning",
-    "Math Tutoring for High School",
-    "Same-day Package Delivery",
-    "Emergency Plumbing Services",
-    "Certified Electrician Help",
-    "Local Moving Service",
-    "Spa & Massage Therapy",
-    "Dog Walking and Sitting",
-    "Furniture Repair",
-    "PC & Laptop Fix",
-    "Lawn Mowing and Gardening",
-    "Custom Woodwork",
-    "Personal Fitness Coaching",
-    "Birthday Party Planning",
-    "Professional Portrait Photography",
   ];
 
   const descriptions = [
@@ -145,6 +129,7 @@ async function main() {
     },
   ];
 
+  console.log("📂 Upserting categories...");
   for (const name of categories) {
     await prisma.category.upsert({
       where: { name },
@@ -158,11 +143,12 @@ async function main() {
   const providerData = [
     { name: "David", email: "david@example.com" },
     { name: "Sarah", email: "sarah@example.com" },
-    { name: "Zack", email: "Zack@example.com" },
+    { name: "Zack", email: "zack@example.com" },
   ];
 
   const hashedPassword = await bcrypt.hash("password123", 10);
 
+  console.log("👤 Upserting providers...");
   const providers = await Promise.all(
     providerData.map((p) =>
       prisma.user.upsert({
@@ -178,6 +164,7 @@ async function main() {
     )
   );
 
+  console.log("📋 Creating services...");
   for (const provider of providers) {
     for (const { title, category, image } of serviceData) {
       const cat = allCategories.find((c) => c.name === category);
@@ -189,16 +176,22 @@ async function main() {
           description:
             descriptions[Math.floor(Math.random() * descriptions.length)],
           price: parseFloat((Math.random() * 150 + 50).toFixed(2)),
-          images: [image], // Use only one relevant image
+          images: [image],
           providerId: provider.id,
           categoryId: cat.id,
         },
       });
     }
   }
+
+  console.log("✅ Seeding complete.");
 }
 
 main()
-  .then(() => console.log("✅ Seeding complete"))
-  .catch((e) => console.error("❌ Error during seeding:", e))
-  .finally(() => prisma.$disconnect());
+  .catch((e) => {
+    console.error("❌ Error during seeding:", e);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+    console.log("🔌 Prisma disconnected.");
+  });

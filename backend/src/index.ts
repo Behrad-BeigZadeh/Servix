@@ -10,6 +10,7 @@ import categoryRoutes from "./routes/category.route";
 import cors from "cors";
 import { app, server } from "./sockets/socket";
 import { prisma } from "./lib/prisma";
+import logger from "./lib/logger";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -34,13 +35,13 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/categories", categoryRoutes);
 
 server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  logger.info(`🚀 Server running on port ${PORT}`);
   prisma
     .$connect()
     .then(() => {
-      console.log("Connected to database successfully");
+      logger.info("Connected to database successfully");
     })
     .catch((error) => {
-      console.error("Error connecting to the database", error);
+      logger.error("Error connecting to the database", error);
     });
 });
