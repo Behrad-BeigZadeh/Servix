@@ -76,7 +76,7 @@ model Service {
 model Booking {
   id        String        @id @default(uuid())
   date      DateTime
-  service   Service       @relation(fields: [serviceId], references: [id])
+  service   Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId String
   client    User          @relation("ClientBookings", fields: [clientId], references: [id], onDelete: Cascade)
   clientId  String

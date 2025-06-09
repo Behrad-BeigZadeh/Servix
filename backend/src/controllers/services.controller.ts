@@ -302,8 +302,9 @@ export const deleteService = async (
         .status(403)
         .json({ error: "You can only delete your own services" });
     }
+
     const hasBookings = await prisma.booking.findFirst({
-      where: { serviceId: id },
+      where: { serviceId: id, NOT: { status: "DECLINED" } },
     });
 
     if (hasBookings) {
@@ -316,6 +317,7 @@ export const deleteService = async (
 
     return res.status(200).json({ data: service });
   } catch (error) {
+    console.log("error", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

@@ -10,12 +10,13 @@ import toast from "react-hot-toast";
 import { useSocketStore } from "@/stores/socketStore";
 import { getTotalUnseenMessages } from "@/api/chat/chatApi";
 import { getPendingCounts } from "@/api/bookings/bookingsApi";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const { user, accessToken, logout } = useUserStore();
-
+  const router = useRouter();
   const { data: pendingCount } = useQuery({
     queryKey: ["pendingBookingsCount", user?.id],
     queryFn: () => getPendingCounts(),
@@ -34,6 +35,7 @@ export default function Navbar() {
       toast.success("Logged out successfully.");
       logout();
       useSocketStore.getState().disconnect();
+      router.push("/");
       setMenuOpen(false);
     },
 
