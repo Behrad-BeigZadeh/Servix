@@ -304,7 +304,10 @@ export const deleteService = async (
     }
 
     const hasBookings = await prisma.booking.findFirst({
-      where: { serviceId: id, NOT: { status: "DECLINED" } },
+      where: {
+        serviceId: id,
+        NOT: { OR: [{ status: "COMPLETED" }, { status: "DECLINED" }] },
+      },
     });
 
     if (hasBookings) {
