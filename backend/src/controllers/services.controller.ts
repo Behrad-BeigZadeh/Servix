@@ -79,10 +79,6 @@ export const getProviderServices = async (
       },
     });
 
-    if (services.length === 0) {
-      return res.status(404).json({ error: "Service not found" });
-    }
-
     return res.status(200).json({ data: services });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });

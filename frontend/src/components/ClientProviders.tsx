@@ -3,14 +3,14 @@ import { ReactNode, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { useNotifications } from "@/hooks/useNotifications";
-import { useUserStore } from "@/stores/userStore";
 import { useSocketStore } from "@/stores/socketStore";
 import { useAuthInitializer } from "@/hooks/useAuthInitializer";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
 
-  const { accessToken } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
   const connect = useSocketStore((state) => state.connect);
   useAuthInitializer();
 

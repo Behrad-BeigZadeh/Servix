@@ -4,11 +4,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getSingleService } from "@/api/services/servicesApi";
 import { useEffect, useState } from "react";
 import { ServiceType } from "../page";
-import { useUserStore } from "@/stores/userStore";
 import { createBooking } from "@/api/bookings/bookingsApi";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 type Props = {
   serviceId: string;
@@ -16,7 +16,7 @@ type Props = {
 
 export default function ServiceDetailsClient({ serviceId }: Props) {
   const [service, setService] = useState<ServiceType | null>(null);
-  const { accessToken } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
   const router = useRouter();
 
   const { data, isError, isLoading } = useQuery({

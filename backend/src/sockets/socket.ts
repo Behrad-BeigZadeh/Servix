@@ -3,16 +3,11 @@ import http from "http";
 import express from "express";
 import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
-import { RateLimiterMemory, RateLimiterRes } from "rate-limiter-flexible";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 import dotenv from "dotenv";
 import logger from "../lib/logger";
 
 dotenv.config();
-
-const messageRateLimiter = new RateLimiterMemory({
-  points: 10, // 10 messages
-  duration: 10, // per 10 seconds
-});
 
 const app = express();
 const server = http.createServer(app);

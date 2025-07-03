@@ -11,11 +11,14 @@ import { useSocketStore } from "@/stores/socketStore";
 import { getTotalUnseenMessages } from "@/api/chat/chatApi";
 import { getPendingCounts } from "@/api/bookings/bookingsApi";
 import { useRouter } from "next/navigation";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dashboardOpen, setDashboardOpen] = useState(false);
-  const { user, accessToken, logout } = useUserStore();
+  const { user, logoutUser, hasHydrated } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
+
   const router = useRouter();
   const { data: pendingCount } = useQuery({
     queryKey: ["pendingBookingsCount", user?.id],
@@ -33,7 +36,7 @@ export default function Navbar() {
     mutationFn: () => handleLogout(),
     onSuccess: () => {
       toast.success("Logged out successfully.");
-      logout();
+      logoutUser();
       useSocketStore.getState().disconnect();
       router.push("/");
       setMenuOpen(false);
@@ -49,6 +52,12 @@ export default function Navbar() {
     logoutMutation.mutate();
   };
 
+  if (!hasHydrated)
+    return (
+      <div className="flex justify-center py-10">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-t-cyan-400 border-white/10" />
+      </div>
+    );
   return (
     <header className="w-full border-b shadow-sm bg-zinc-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">

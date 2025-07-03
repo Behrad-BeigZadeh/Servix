@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -11,6 +11,7 @@ import { useUserStore } from "@/stores/userStore";
 import { AxiosError } from "axios";
 import { ZodErrorItem } from "../signup/page";
 import { useSocketStore } from "@/stores/socketStore";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 export type LoginFormData = {
   email: string;
@@ -19,7 +20,8 @@ export type LoginFormData = {
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { setUser, setAccessToken } = useUserStore();
+  const { setUser } = useUserStore();
+  const { setAccessToken } = useAuthTokenStore();
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",

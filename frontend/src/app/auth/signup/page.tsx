@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useUserStore } from "@/stores/userStore";
 import { AxiosError } from "axios";
 import { useSocketStore } from "@/stores/socketStore";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 export type SignupFormData = {
   username: string;
@@ -24,7 +25,8 @@ export type ZodErrorItem = { message: string };
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { setUser, setAccessToken } = useUserStore();
+  const { setUser } = useUserStore();
+  const { setAccessToken } = useAuthTokenStore();
   const [formData, setFormData] = useState<SignupFormData>({
     username: "",
     email: "",

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createService, fetchCategories } from "@/api/services/servicesApi";
 import { useUserStore } from "@/stores/userStore";
 import { AxiosError } from "axios";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 export type CreateServiceFormData = {
   title: string;
@@ -24,7 +25,8 @@ const CreateServicePage = () => {
     price: "",
     image: null as File | null,
   });
-  const { accessToken, user } = useUserStore();
+  const { user } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
     []
   );

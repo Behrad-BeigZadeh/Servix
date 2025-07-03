@@ -8,9 +8,11 @@ import { ServiceType } from "../page";
 import { FolderOpen } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 const ProviderServices = () => {
-  const { user, accessToken } = useUserStore();
+  const { user } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
   const router = useRouter();
   const {
     data: services = [],

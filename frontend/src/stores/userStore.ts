@@ -11,23 +11,26 @@ interface User {
 
 interface UserStore {
   user: User | null;
-  accessToken: string | null;
-  setAccessToken: (accessToken: string) => void;
+  hasHydrated: boolean;
   setUser: (user: User) => void;
-  logout: () => void;
+  logoutUser: () => void;
+  setHasHydrated: (hasHydrated: boolean) => void;
 }
 
 export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       user: null,
-      accessToken: null,
-      setAccessToken: (accessToken: string) => set({ accessToken }),
+      hasHydrated: false,
       setUser: (user) => set({ user }),
-      logout: () => set({ user: null, accessToken: null }),
+      logoutUser: () => set({ user: null }),
+      setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {
       name: "servix-user",
+      onRehydrateStorage: () => () => {
+        useUserStore.getState().setHasHydrated(true);
+      },
     }
   )
 );

@@ -4,9 +4,11 @@ import React from "react";
 import { CheckCircle } from "lucide-react";
 import { useUserStore } from "@/stores/userStore";
 import { useRouter } from "next/navigation";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 const BecomeProviderPage = () => {
-  const { user, accessToken } = useUserStore();
+  const { user } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
   const router = useRouter();
 
   const handleCreateServiceClick = () => {

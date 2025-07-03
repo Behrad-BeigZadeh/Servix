@@ -4,6 +4,7 @@ import { AuthenticatedRequest } from "../middleware/midddleware";
 import { sendMessageSchema, startChatSchema } from "../schemas/chatSchema";
 import { getUserSocketId } from "../sockets/socket";
 import { io } from "../sockets/socket";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 
 export const getAllUsersChats = async (
   req: AuthenticatedRequest,
@@ -194,12 +195,29 @@ export const startOrGetChatRoom = async (
   }
 };
 
+const messageRateLimiter = new RateLimiterMemory({
+  points: 10, // 10 messages
+  duration: 10, // per 10 seconds
+});
+
 export const sendMessage = async (
   req: AuthenticatedRequest,
   res: Response
 ): Promise<any> => {
   try {
     const user = req.user;
+
+    // Rate limit check
+    try {
+      await messageRateLimiter.consume(user.id); // Consume 1 point per message
+    } catch (rateLimitRes) {
+      return res.status(429).json({
+        error: `Too many messages sent. Please wait ${Math.ceil(
+          (rateLimitRes as any).msBeforeNext / 1000
+        )} seconds.`,
+      });
+    }
+
     const { chatRoomId } = req.params;
 
     const parsed = sendMessageSchema.safeParse(req.body);

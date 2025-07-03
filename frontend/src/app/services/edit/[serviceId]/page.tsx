@@ -8,14 +8,14 @@ import {
   getSingleService,
   updateService,
 } from "@/api/services/servicesApi";
-import { useUserStore } from "@/stores/userStore";
 import { AxiosError } from "axios";
 import { CreateServiceFormData } from "@/app/create-service/page";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 const EditServicePage = () => {
   const { serviceId } = useParams();
   const router = useRouter();
-  const { accessToken } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
   const [formData, setFormData] = useState({
     title: "",
     description: "",

@@ -1,6 +1,5 @@
 "use client";
 import ServiceCard from "@/components/ServiceCard";
-import { useUserStore } from "@/stores/userStore";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { JSX, useEffect, useState } from "react";
 import { getBookings } from "@/api/bookings/bookingsApi";
@@ -17,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { startOrGetChatRoom } from "@/api/chat/chatApi";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 type BookingType = {
   id: string;
@@ -62,7 +62,7 @@ const statusIcons: Record<string, JSX.Element> = {
 const MyBookings = () => {
   const [bookings, setBookings] = useState<BookingType[]>([]);
   const [selectedStatus, setSelectedStatus] = useState("ALL");
-  const { accessToken } = useUserStore();
+  const { accessToken } = useAuthTokenStore();
   const router = useRouter();
   const { data, isError, isLoading, error } = useQuery({
     queryKey: ["clientBookings"],
