@@ -17,7 +17,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const { user, logoutUser, hasHydrated } = useUserStore();
-  const { accessToken } = useAuthTokenStore();
+  const { accessToken, logoutToken } = useAuthTokenStore();
 
   const router = useRouter();
   const { data: pendingCount } = useQuery({
@@ -37,6 +37,8 @@ export default function Navbar() {
     onSuccess: () => {
       toast.success("Logged out successfully.");
       logoutUser();
+      logoutToken();
+
       useSocketStore.getState().disconnect();
       router.push("/");
       setMenuOpen(false);
