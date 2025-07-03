@@ -4,10 +4,15 @@ import ProviderServices from "@/app/services/my-services/page";
 import { useUserStore } from "@/stores/userStore";
 import { getProviderServices } from "@/api/services/servicesApi";
 import { useRouter } from "next/navigation";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 // Mocks
 jest.mock("@/stores/userStore", () => ({
   useUserStore: jest.fn(),
+}));
+
+jest.mock("@/stores/tokenStore", () => ({
+  useAuthTokenStore: jest.fn(),
 }));
 
 jest.mock("@/api/services/servicesApi", () => ({
@@ -55,6 +60,8 @@ describe("ProviderServices Component", () => {
   it("redirects to '/' if user is not a PROVIDER", async () => {
     (useUserStore as unknown as jest.Mock).mockReturnValue({
       user: { id: "123", role: "CLIENT" },
+    });
+    (useAuthTokenStore as unknown as jest.Mock).mockReturnValue({
       accessToken: "mockToken",
     });
 
@@ -70,6 +77,8 @@ describe("ProviderServices Component", () => {
   it("shows loading spinner when fetching services", () => {
     (useUserStore as unknown as jest.Mock).mockReturnValue({
       user: { id: "123", role: "PROVIDER" },
+    });
+    (useAuthTokenStore as unknown as jest.Mock).mockReturnValue({
       accessToken: "mockToken",
     });
 
@@ -84,6 +93,8 @@ describe("ProviderServices Component", () => {
   it("renders fetched services", async () => {
     (useUserStore as unknown as jest.Mock).mockReturnValue({
       user: { id: "user-id", role: "PROVIDER", username: "Test User" },
+    });
+    (useAuthTokenStore as unknown as jest.Mock).mockReturnValue({
       accessToken: "fake-token",
     });
 
@@ -111,6 +122,8 @@ describe("ProviderServices Component", () => {
   it("displays error message if fetch fails", async () => {
     (useUserStore as unknown as jest.Mock).mockReturnValue({
       user: { id: "user-id", role: "PROVIDER" },
+    });
+    (useAuthTokenStore as unknown as jest.Mock).mockReturnValue({
       accessToken: "fake-token",
     });
 

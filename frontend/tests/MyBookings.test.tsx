@@ -1,16 +1,18 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-
-import { useUserStore } from "@/stores/userStore";
 import { getBookings } from "@/api/bookings/bookingsApi";
 import { startOrGetChatRoom } from "@/api/chat/chatApi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import MyBookings from "@/app/bookings/my-bookings/page";
 import { AxiosError, AxiosHeaders } from "axios";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 // Mock stores and API
 jest.mock("@/stores/userStore", () => ({
   useUserStore: jest.fn(),
+}));
+jest.mock("@/stores/tokenStore", () => ({
+  useAuthTokenStore: jest.fn(),
 }));
 jest.mock("@/api/bookings/bookingsApi", () => ({
   getBookings: jest.fn(),
@@ -70,7 +72,7 @@ const renderWithClient = (ui: React.ReactElement) => {
 
 describe("MyBookings", () => {
   beforeEach(() => {
-    (useUserStore as unknown as jest.Mock).mockReturnValue({
+    (useAuthTokenStore as unknown as jest.Mock).mockReturnValue({
       accessToken: mockAccessToken,
     });
     jest.clearAllMocks();

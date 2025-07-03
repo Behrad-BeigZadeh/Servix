@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { mocked } from "jest-mock";
 import toast from "react-hot-toast";
 import { createService, fetchCategories } from "@/api/services/servicesApi";
+import { useAuthTokenStore } from "@/stores/tokenStore";
 
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
@@ -31,6 +32,9 @@ jest.mock("@/api/services/servicesApi", () => ({
 jest.mock("@/stores/userStore", () => ({
   useUserStore: jest.fn(),
 }));
+jest.mock("@/stores/tokenStore", () => ({
+  useAuthTokenStore: jest.fn(),
+}));
 
 const push = jest.fn();
 const replace = jest.fn();
@@ -51,6 +55,8 @@ describe("CreateServicePage", () => {
     jest.clearAllMocks();
     (useUserStore as unknown as jest.Mock).mockReturnValue({
       user: { role: "PROVIDER" },
+    });
+    (useAuthTokenStore as unknown as jest.Mock).mockReturnValue({
       accessToken: "mockAccessToken",
     });
   });
@@ -238,6 +244,8 @@ describe("CreateServicePage", () => {
     it("should not allow submission if accessToken is missing", async () => {
       (useUserStore as unknown as jest.Mock).mockReturnValue({
         user: { role: "PROVIDER" },
+      });
+      (useAuthTokenStore as unknown as jest.Mock).mockReturnValue({
         accessToken: null,
       });
 

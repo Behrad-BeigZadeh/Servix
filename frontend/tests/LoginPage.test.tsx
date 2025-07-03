@@ -21,6 +21,11 @@ const mockSetAccessToken = jest.fn();
 jest.mock("@/stores/userStore", () => ({
   useUserStore: jest.fn(() => ({
     setUser: mockSetUser,
+  })),
+}));
+
+jest.mock("@/stores/tokenStore", () => ({
+  useAuthTokenStore: jest.fn(() => ({
     setAccessToken: mockSetAccessToken,
   })),
 }));
