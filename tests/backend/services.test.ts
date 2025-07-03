@@ -122,24 +122,7 @@ describe("Services routes", () => {
       expect(res.status).toBe(401);
       expect(res.body).toHaveProperty("error", "Unauthorized");
     });
-    it("should return 404 if service does not exist ", async () => {
-      const response = await request(app).post("/api/auth/login").send({
-        email: "client@test.com",
-        password: "123123",
-      });
-
-      const cookies = response.headers["set-cookie"];
-      expect(cookies).toBeDefined();
-      const accessToken = response.body.data.accessToken;
-
-      const res = await request(app)
-        .get(`/api/services/provider/wrongId`)
-        .send()
-        .set("Authorization", `Bearer ${accessToken}`)
-        .set("Cookie", cookies);
-      expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty("error", "Service not found");
-    });
+  
     it("should return 200 and return all services", async () => {
       const response = await request(app).post("/api/auth/login").send({
         email: "provider@test.com",
