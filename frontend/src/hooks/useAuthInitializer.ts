@@ -5,11 +5,13 @@ import { useAuthTokenStore } from "@/stores/tokenStore";
 import { handleLogout } from "@/api/auth/authApi";
 
 export const useAuthInitializer = () => {
-  const { setUser, logoutUser, setHasHydrated } = useUserStore();
+  const { user, setUser, logoutUser, hasHydrated } = useUserStore();
   const { setAccessToken, logoutToken } = useAuthTokenStore();
 
   useEffect(() => {
-    const tryRefresh = async () => {
+    if (!hasHydrated || user) return;
+
+    const timeout = setTimeout(async () => {
       try {
         const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh-token`,
@@ -25,11 +27,9 @@ export const useAuthInitializer = () => {
           logoutUser();
           logoutToken();
         }
-      } finally {
-        setHasHydrated(true);
       }
-    };
+    }, 150);
 
-    tryRefresh();
-  }, []);
+    return () => clearTimeout(timeout);
+  }, [hasHydrated]);
 };
